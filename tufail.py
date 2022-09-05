@@ -22,8 +22,8 @@ while True:
     var=['Sr No','Date','Name','Model','Contact','Address','RAM','ROM','IMEI1','IMEI2','Adhar','PAN','Driving Liscence','Amount']
     lis = []
     x = 0
+    g = int(input("1-> Enter Data\n2-> Search Data\n3-> Exit\nEnter your choice: "))
     while x < len(var):
-        g = int(input("1-> Enter Data\n2-> Search Data\n3-> Exit\nEnter your choice: "))
         if g == 2:
             Imei = input("Enter the data you want to search: ")
             check(Imei)
@@ -34,16 +34,17 @@ while True:
                 print(f"Entry No: {SNo}")
                 lis.append(SNo)
                 x += 1
-            print(f"Enter {var[x]}: ", end='')
-            z = input()
-            if z == "Exit" or z == "exit":
-                break
-            elif z == "Edit" or z == "edit":
-                x -= 1
-                lis.pop()
             else:
-                lis.append(z)
-                x += 1
+                print(f"Enter {var[x]}: ", end='')
+                z = input()
+                if z == "Exit" or z == "exit":
+                    break
+                elif z == "Edit" or z == "edit":
+                    x -= 1
+                    lis.pop()
+                else:
+                    lis.append(z)
+                    x += 1
     a = [y if y != "" else "-" for y in lis]
     records.append(tuple(a))
     try:
