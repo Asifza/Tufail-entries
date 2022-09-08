@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% block title %} Home {% endblock title %}
+{% block body %}
+
+<div class="container my-5">
+    <h2>Add a Device</h2>
+    <form action="/" method="post">
+        <div class="mb-3">
+            <label for="Cust_Name" class="form-label">Customer Name</label>
+            <input type="text" class="form-control" name="Cust_Name" id="Cust_Name">
+        </div>
+        <div class="mb-3">
+            <label for="Model" class="form-label">Mobile Model</label>
+            <input type="text" class="form-control" name="Model" id="Model">
+        </div>
+        <div class="mb-3">
+            <label for="Mob_No" class="form-label">Mobile Number</label>
+            <input type="text" class="form-control" name="Mob_No" id="Mob_No">
+        </div>
+        <div class="mb-3">
+            <label for="Alt_No" class="form-label">Alternate Number</label>
+            <input type="text" class="form-control" name="Alt_No" id="Alt_No">
+        </div>
+        <div class="mb-3">
+            <label for="RAM" class="form-label">RAM</label>
+            <input type="text" class="form-control" name="RAM" id="RAM">
+        </div>
+        <div class="mb-3">
+            <label for="ROM" class="form-label">ROM</label>
+            <input type="text" class="form-control" name="ROM" id="ROM">
+        </div>
+        <div class="mb-3">
+            <label for="Address" class="form-label">Address</label>
+            <input type="text" class="form-control" name="Address" id="Address">
+        </div>
+        <div class="mb-3">
+            <label for="IMEI_1" class="form-label">IMEI 1</label>
+            <input type="text" class="form-control" name="IMEI_1" id="IMEI_1" required>
+        </div>
+        <div class="mb-3">
+            <label for="IMEI_2" class="form-label">IMEI 2</label>
+            <input type="text" class="form-control" name="IMEI_2" id="IMEI_2">
+        </div>
+        <div class="mb-3">
+            <label for="Adhar" class="form-label">Adhar No</label>
+            <input type="text" class="form-control" name="Adhar" id="Adhar">
+        </div>
+        <div class="mb-3">
+            <label for="PAN" class="form-label">PAN</label>
+            <input type="text" class="form-control" name="PAN" id="PAN">
+        </div>
+        <div class="mb-3">
+            <label for="Driv_Lisce" class="form-label">Driving liscence</label>
+            <input type="text" class="form-control" name="Driv_Lisce" id="Driv_Lisce">
+        </div>
+        <div class="mb-3">
+            <label for="Amount" class="form-label">Amount</label>
+            <input type="text" class="form-control" name="Amount" id="Amount">
+        </div>
+        <button type="submit" class="btn btn-primary btn-dark">Submit</button>
+    </form>
+</div>
+<div class="container my-5">
+    <h3>Your Purchases</h3>
+    <table class="table table-striped">
+
+        {% if allMobile|length==0 %}
+        <div class="alert alert-dark" role="alert">
+            No Devices Found! Make an Entry.
+        </div>
+        {% else %}
+        <thead>
+            <tr>
+                <th scope="col">SNo</th>
+                <th scope="col">Customer Name</th>
+                <th scope="col">Model</th>
+                <th scope="col">Mobile No</th>
+                <th scope="col">Alt No</th>
+                <th scope="col">RAM</th>
+                <th scope="col">ROM</th>
+                <th scope="col">Address</th>
+                <th scope="col">IMEI 1</th>
+                <th scope="col">IMEI 2</th>
+                <th scope="col">Adhar No</th>
+                <th scope="col">PAN</th>
+                <th scope="col">Driving Liscence</th>
+                <th scope="col">Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for mobile in allMobile %}
+            <tr>
+                <th scope="row">{{loop.index}}</th>
+                <td>{{mobile.Cust_Name}}</td>
+                <td>{{mobile.Model}}</td>
+                <td>{{mobile.Mob_No}}</td>
+                <td>{{mobile.Alt_No}}</td>
+                <td>{{mobile.RAM}}</td>
+                <td>{{mobile.ROM}}</td>
+                <td>{{mobile.Address}}</td>
+                <td>{{mobile.IMEI_1}}</td>
+                <td>{{mobile.IMEI_2}}</td>
+                <td>{{mobile.Adhar}}</td>
+                <td>{{mobile.PAN}}</td>
+                <td>{{mobile.Driv_Lisce}}</td>
+                <td>{{mobile.Amount}}</td>
+                <td>
+                    <a href="/update/{{mobile.sno}}" type="button" class="btn btn-dark btn-sm mx-1">Update</button>
+                        <a href="/delete/{{mobile.sno}}" type="button" class="btn btn-dark btn-sm mx-1">Delete</button>
+                </td>
+            </tr>
+
+            {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+    crossorigin="anonymous"></script>
+
+
+{% endblock body %}
