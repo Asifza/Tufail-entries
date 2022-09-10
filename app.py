@@ -1,13 +1,18 @@
 from email.policy import default
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
+import flask_whooshalchemy3 as wa
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///mobile.db"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+app.config['WHOOSH_BASE'] = 'whoosh'
 db = SQLAlchemy(app)
 
 class Mobile(db.Model):
+    __tablename__ = 'mobile'
+    __searchable__ = ['Cust_Name','Model','Mob_No','Alt_No','RAM','ROM','Address','IMEI_1','IMEI_2','Adhar','PAN','Driv_Lisce','Amount']
+
     sno = db.Column(db.Integer, primary_key = True)
     Cust_Name = db.Column(db.String(30))
     Model = db.Column(db.String(20))
@@ -22,6 +27,8 @@ class Mobile(db.Model):
     PAN = db.Column(db.String(15))
     Driv_Lisce = db.Column(db.String(25))
     Amount = db.Column(db.String(10))
+
+wa.whoosh.index(app, Mobile)
 
 @app.route("/", methods=['GET','POST'])
 def main():
@@ -87,6 +94,16 @@ def delete(sno):
     db.session.delete(mobile)
     db.session.commit()
     return redirect("/")
+
+@app.route("/about/")
+def about():
+    return render_template('about.html', title='about')
+
+@app.route("/search",methods=['GET','POST'])
+def search():
+    allMobile= Mobile.query.whoosh_search(request.args.get('query')).all()
+
+    return render_template('search.html', allMobile = allMobile)
 
 if __name__ =="__main__":
     app.run(debug = True, port = 7500)
