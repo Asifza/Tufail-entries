@@ -52,6 +52,11 @@ def main():
     allMobile= Mobile.query.all()
     return render_template('index.html', allMobile = allMobile)
 
+@app.route("/table")
+def table():
+    mobile= Mobile.query.all()
+    return render_template('table.html', allMobile = mobile)
+    
 @app.route("/update/<int:sno>",methods=['GET','POST'])
 def update(sno):
     if request.method=='POST':
