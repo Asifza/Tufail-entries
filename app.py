@@ -1,12 +1,12 @@
 from email.policy import default
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
-import flask_whooshalchemy3 as wa
+# import flask_whooshalchemy3 as wa
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///mobile.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-app.config['WHOOSH_BASE'] = 'whoosh'
+# app.config['WHOOSH_BASE'] = 'whoosh'
 db = SQLAlchemy(app)
 
 class Mobile(db.Model):
@@ -28,7 +28,7 @@ class Mobile(db.Model):
     Driv_Lisce = db.Column(db.String(25))
     Amount = db.Column(db.String(10))
 
-wa.whoosh.index(app, Mobile)
+# wa.whoosh.index(app, Mobile)
 
 @app.route("/", methods=['GET','POST'])
 def main():
@@ -107,3 +107,4 @@ def search():
 
 if __name__ =="__main__":
     app.run(debug = True, port = 7500)
+
