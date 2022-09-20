@@ -1,12 +1,18 @@
-from email.policy import default
+# from email.policy import default
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField
+from wtforms.validators import DataRequired
 # import flask_whooshalchemy3 as wa
+import os
 
+SECRET_KEY = os.urandom(32)
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///mobile.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 # app.config['WHOOSH_BASE'] = 'whoosh'
+app.config['SECRET_KEY'] = SECRET_KEY
 db = SQLAlchemy(app)
 
 class Mobile(db.Model):
@@ -104,12 +110,22 @@ def delete(sno):
 def about():
     return render_template('about.html', title='about')
 
-@app.route("/search",methods=['GET','POST'])
-def search():
-    allMobile= Mobile.query.whoosh_search(request.args.get('query')).all()
+@app.context_processor
+def base():
+    form = Searchform()
+    return dict(form = form)
 
-    return render_template('search.html', allMobile = allMobile)
+@app.route("/search",methods=['POST'])
+def search():
+    form = Searchform()
+    if form.validate_on_submit():
+        Mobile.searched= form.searched.data
+        allMobile= Mobile.query.filter_by(IMEI_1=form)
+        return render_template('search.html', form = form, searched=Mobile.searched, allMobile=allMobile)
+
+class Searchform(FlaskForm):
+    searched = StringField("Searched", validators=[DataRequired()])
+    submit = SubmitField("Submit")
 
 if __name__ =="__main__":
     app.run(debug = True, port = 7500)
-
